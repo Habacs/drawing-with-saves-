@@ -1,57 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
 class Program
 {
+
     static void Main()
     {
-        int topx = 10;
-        int topy = 5;
-
-        int buttomx = 10;
-        int buttomy = 24;
-
-        int leftSidex = 10;
-        int leftSidey = 5;
-
-        int rightSidex = 110;
-        int rightSidey = 5;
-        char borderchar = '█';
-        ConsoleColor color = ConsoleColor.Red;
-
-        while (topx != 110 && buttomx != 110)
-        {
-
-            Console.SetCursorPosition(topx, topy);
-
-            Console.ForegroundColor = color;
-            Console.Write(borderchar);
-            topx++;
-
-            Console.SetCursorPosition(buttomx, buttomy);
-            Console.ForegroundColor = color;
-            Console.Write(borderchar);
-            buttomx++;
-        }
-
-        while (leftSidey != 25 && rightSidey != 25)
-        {
-            Console.SetCursorPosition(leftSidex, leftSidey);
-            Console.ForegroundColor = color;
-            Console.Write(borderchar);
-            leftSidey++;
-
-
-            Console.SetCursorPosition(rightSidex, rightSidey);
-            Console.ForegroundColor = color;
-            Console.Write(borderchar);
-            rightSidey++;
-
-        }
-
-
-
 
         Console.CursorVisible = false;
         char currentChar = '█';
@@ -64,6 +19,8 @@ class Program
         int borderY1 = 5;
         int borderX2 = 110;
         int borderY2 = 25;
+
+        BorderLine(borderX1, borderY1, borderX2, borderY2, '█', ConsoleColor.Red);
 
         List<List<(int x, int y, char c, ConsoleColor color)>> savedDrawings = new List<List<(int, int, char, ConsoleColor)>>();
         List<(int x, int y, char c, ConsoleColor color)> currentDrawing = new List<(int, int, char, ConsoleColor)>();
@@ -90,7 +47,7 @@ class Program
                     if (y > borderY1 + 1) y--;
                     break;
                 case ConsoleKey.DownArrow:
-                    if (y < borderY2 - 2) y++;
+                    if (y < borderY2 - 1) y++;
                     break;
                 case ConsoleKey.LeftArrow:
                     if (x > borderX1 + 1) x--;
@@ -100,10 +57,10 @@ class Program
                     break;
 
                 case ConsoleKey.D1:
-                    currentColor = ConsoleColor.Red;
+                    currentColor = ConsoleColor.White;
                     break;
                 case ConsoleKey.D2:
-                    currentColor = ConsoleColor.Green;
+                    currentColor = ConsoleColor.Black;
                     break;
                 case ConsoleKey.D3:
                     currentColor = ConsoleColor.Blue;
@@ -122,6 +79,9 @@ class Program
                     Console.Clear();
                     savedDrawings.Add(new List<(int, int, char, ConsoleColor)>(currentDrawing));  
                     currentDrawing.Clear();
+                    currentColor = ConsoleColor.White;
+                    BorderLine(borderX1, borderY1, borderX2, borderY2, '█', ConsoleColor.Red);
+
                     x = startX;  
                     y = startY;  
                     break;
@@ -137,7 +97,11 @@ class Program
                             Console.ForegroundColor = pixel.color;
                             Console.Write(pixel.c);
                         }
-                        currentDrawing = new List<(int, int, char, ConsoleColor)>(savedDrawings[selectedDrawing]); 
+                        currentDrawing = new List<(int, int, char, ConsoleColor)>(savedDrawings[selectedDrawing]);
+                        BorderLine(borderX1, borderY1, borderX2, borderY2, '█', ConsoleColor.Red);
+
+
+
                     }
                     break;
 
@@ -186,5 +150,27 @@ class Program
         }
 
         return selectedIndex;
+    }
+    static void BorderLine(int x1, int y1, int x2, int y2, char borderChar, ConsoleColor color)
+    {
+        Console.ForegroundColor = color;
+
+        for (int x = x1; x <= x2; x++)
+        {
+            Console.SetCursorPosition(x, y1);
+            Console.Write(borderChar);
+            Console.SetCursorPosition(x, y2);
+            Console.Write(borderChar);
+        }
+
+        for (int y = y1; y <= y2; y++)
+        {
+            Console.SetCursorPosition(x1, y);
+            Console.Write(borderChar);
+            Console.SetCursorPosition(x2, y);
+            Console.Write(borderChar);
+        }
+
+
     }
 }
